@@ -3,7 +3,7 @@ import React from 'react';
 const ChatCardMe = ({ sender, message, time }) => {
   return (
     <div className="flex justify-start mb-4">
-      <div className="bg-green-900 p-3 rounded-xl shadow-md w-full max-w-lg">
+      <div className="bg-lime-900 p-3 rounded-xl shadow-md w-full max-w-lg">
         <div className="flex justify-between items-center mb-2">
           <h4 className="font-bold text-yellow-300">{sender}</h4>
           <span className="text-gray-400 text-sm">{time}</span>

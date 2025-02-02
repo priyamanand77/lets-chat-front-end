@@ -5,7 +5,8 @@ const ChatCard = ({ sender, message, time }) => {
     <div className="flex justify-start mb-4">
       <div className="flex-shrink-0 mr-3">
         <div className="bg-gray-600 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold">
-          {sender.split(' ').map(w=>w.charAt(0).toUpperCase()).join('')}
+          {
+          sender.split(' ').map(w=>w.charAt(0).toUpperCase()).join('')}
         </div>
       </div>
       <div className="bg-green-900 p-3 rounded-xl shadow-md w-full max-w-lg">
