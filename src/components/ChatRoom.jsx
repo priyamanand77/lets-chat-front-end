@@ -43,10 +43,14 @@ export default function ChatRoom() {
     }, []);
 
     useEffect(() => {
-        const connWebSocket = () => {
+        const connWebSocket = async () => {
             const sockJs = new SockJS(`${baseUrl}/chat`);
             const client = Stomp.over(sockJs);
-            client.connect({}, () => {
+            await client.connect({
+              "headers":{
+                  Authorization: 'Basic cHJpeWFtOnByaXlhbQ=='
+              }
+            }, () => {
                 setStompClient(client);
                 toast.success(`Connected to ${roomId}`);
                 client.subscribe(`/topic/room/${roomId}`, (message) => {
