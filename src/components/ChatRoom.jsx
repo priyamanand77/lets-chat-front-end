@@ -83,7 +83,16 @@ export default function ChatRoom() {
 
             stompClient.send(`/app/add-message/${roomId}`, {}, JSON.stringify(messagenew));
             setInput("");
-        } else {
+        } 
+        else if (connected && stompClient && input.length==0) {
+         
+            toast('please enter some text!', {
+                icon: '⚠️',
+              });
+        
+        } 
+        
+        else {
             toast.error("Something went wrong, please try again later!!!");
             exitRoom();
         }
