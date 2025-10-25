@@ -10,8 +10,7 @@ import SockJS from 'sockjs-client';
 import { baseUrl } from '../configs/AxiosHelper';
 import { Stomp } from '@stomp/stompjs';
 import moment from 'moment';
-import { getMessageApi } from '../services/RoomService';
-import axios from 'axios';
+import { downloadFileApi, getMessageApi, uploadFileApi } from '../services/RoomService';
 
 export default function ChatRoom() {
     const { currUser, roomId, connected } = useChatContext();
@@ -95,18 +94,14 @@ export default function ChatRoom() {
             const formData = new FormData();
             formData.append('file', selectedFile);
             try {
-                const res = await axios.post(
-                    'http://localhost:8080/attachments/upload',
-                    formData,
-                    {
-                        headers: {
-                            'Authorization': 'Basic ' + btoa('priyam:priyam'),
-                        },
-                    }
-                );
+                const res =await uploadFileApi(formData);
+                console.log("response from file upload:");
+                console.log(res)
                 fileId = res.data.id;
+                console.log("fileId:", fileId)
                 fileName = selectedFile.name;
             } catch (err) {
+                console.log(err)
                 toast.error('File upload failed');
                 setUploading(false);
                 return;
@@ -132,26 +127,9 @@ export default function ChatRoom() {
         setSelectedFile(null);
     };
 
-    const handleDownload = (id, name) => {
-        fetch(`http://localhost:8080/attachments/${id}/download`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Basic ' + btoa('priyam:priyam'),
-            }
-        })
-            .then(response => response.blob())
-            .then(blob => {
-                const downloadUrl = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = name || '';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            })
-            .catch(() => toast.error('Download failed'));
-    };
-
+ const handleDownload = (id, name) => {
+    downloadFileApi(id, name);
+};
     return (
         <div className='h-full flex flex-col'>
             <header className='fixed w-full flex justify-around bg-gray-700 py-1.5'>
